@@ -22,3 +22,15 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Not posesing any tank"));
 	}
 }
+
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardsCrosshair();
+	UE_LOG(LogTemp, Warning, TEXT("Tick"));
+}
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+
+}
