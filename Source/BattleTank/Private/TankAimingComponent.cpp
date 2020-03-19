@@ -12,7 +12,28 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
+{
+	if ((GetWorld()->GetTimeSeconds() - LastFireTime) < ReloadTime)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringState = EFiringState::Aiming;
+	}
+	else
+	{
+		FiringState = EFiringState::Locked;
+	}
+}
+
+void UTankAimingComponent::BeginPlay()
+{
+	LastFireTime = GetWorld()->GetTimeSeconds();
 }
 
 void UTankAimingComponent::Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
@@ -39,7 +60,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace))
 		return;
-	auto AimDirection = TossVelocity.GetSafeNormal();
+	AimDirection = TossVelocity.GetSafeNormal();
 	MoveBarrelTowards(AimDirection);
 }
 
@@ -57,16 +78,23 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 }
 void UTankAimingComponent::Fire()
 {
+	if (FiringState == EFiringState::Reloading)
+		return;
 	if (!ensure(Barrel))
 		return;
 	if (!ensure(ProjectileBlueprint))
 		return;
-	bool bRealoaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (!bRealoaded)
-		return;
 	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("LaunchSocket"), Barrel->GetSocketRotation("LaunchSocket"));
 	Projectile->LaunchProjectile(LaunchSpeed);
-	LastFireTime = FPlatformTime::Seconds();
+	LastFireTime = GetWorld()->GetTimeSeconds();
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel))
+		return false;
+	auto BarrelDirection = Barrel->GetForwardVector();
+	return !AimDirection.Equals(BarrelDirection, 0.01f);
 }
 
 
