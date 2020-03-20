@@ -39,14 +39,14 @@ public:
 	EFiringState GetFiringState();
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	uint8 GetRoundsLeft();
+	int32 GetRoundsLeft();
 
 protected:
 	UPROPERTY(BlueprintReadonly, Category = "State")
 	EFiringState FiringState = EFiringState::Reloading;
 
-	UPROPERTY(BlueprintReadonly, Category = "State")
-	uint8 Ammo = 4;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 Ammo = 4;
 
 private:
 	// Sets default values for this component's properties

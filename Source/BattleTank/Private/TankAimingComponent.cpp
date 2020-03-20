@@ -41,7 +41,7 @@ EFiringState UTankAimingComponent::GetFiringState()
 	return FiringState;
 }
 
-uint8 UTankAimingComponent::GetRoundsLeft()
+int32 UTankAimingComponent::GetRoundsLeft()
 {
 	return Ammo;
 }
