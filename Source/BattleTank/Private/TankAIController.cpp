@@ -15,7 +15,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	if (InPawn)
 	{
 		auto PossesedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossesedTank))
+		if (!PossesedTank)
 			return;
 		PossesedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
 	}
@@ -25,10 +25,10 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (!ensure(PlayerTank))
+	if (!PlayerTank)
 		return;
 	auto ControlledTank = GetPawn();
-	if (!ensure(ControlledTank))
+	if (!ControlledTank)
 		return;
 
 	MoveToActor(PlayerTank, AcceptanceRadius);
