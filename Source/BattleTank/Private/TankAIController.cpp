@@ -41,5 +41,7 @@ void ATankAIController::Tick(float DeltaTime)
 
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Gotcha"));
+	auto Pawn = GetPawn();
+	if (Pawn)
+		Pawn->DetachFromControllerPendingDestroy();
 }

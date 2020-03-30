@@ -21,13 +21,15 @@ public:
 
 	FTankDelegate OnDeath;
 
+	virtual void BeginPlay() override;
+
 public:
 	virtual float TakeDamage( float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	int32 StartingHealth = 100;
+	int32 StartingHealth = 25;
 
 	UPROPERTY(VisibleAnywhere, Category = "Setup")
-	int32 CurrentHealth = StartingHealth;
+	int32 CurrentHealth;
 };

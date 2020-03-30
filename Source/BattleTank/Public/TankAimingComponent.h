@@ -46,7 +46,7 @@ protected:
 	EFiringState FiringState = EFiringState::Reloading;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int32 Ammo = 4;
+	int32 Ammo = 10;
 
 private:
 	// Sets default values for this component's properties
