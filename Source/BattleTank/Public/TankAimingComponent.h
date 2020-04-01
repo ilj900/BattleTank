@@ -52,7 +52,7 @@ private:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
-	void MoveBarrelTowards(FVector AimDirection);
+	void MoveBarrelTowards(FVector DirectionToAim);
 
 	bool IsBarrelMoving();
 
